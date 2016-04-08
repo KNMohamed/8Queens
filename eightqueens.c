@@ -1,34 +1,34 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-bool a[8];
-bool b[15];
-bool c[15];
-int x[8]; 
+bool a[9];
+bool b[16];
+bool c[17];
+int x[9]; 
 
 	
 void print(){
  	int k;
-	for(k=0;k<8;k++)
+	for(k=1;k<9;k++)
 		printf("%d",x[k]);
 	printf("\n");
 }
 
 void try(int i){
 	int j;
-	for(j = 0; j < 8; j++){
-		if(a[j] == true && b[i+j] == true && c[(i+7)-j] == true){
+	for(j = 1; j < 9; j++){
+		if(a[j] == true && b[i+j-1] == true && c[i-j+9] == true){
 			x[i] = j;
 			a[j] = false;
-			b[i+j] = false;
-			c[(i+7) < 7] = false;
-			if(i < 8)
+			b[i+j-1] = false;
+			c[i-j+9] = false;
+			if(i < 9)
 				try(i+1);
 			else
 				print();
 			a[j] = true;
-			b[i+j] = true;
-			c[(i+7)-j] = true;
+			b[i+j-1] = true;
+			c[i-j+9] = true;
 		}else{
 			printf("dafaq\n");		
 		}
@@ -37,12 +37,12 @@ void try(int i){
 
 int main(){
 	int i;
-	for(i=0; i<8; i++){
+	for(i = 1; i < 9; i++){
 		a[i] = true;
-	}for(i = 0; i < 15; i++){
+	}for(i = 1; i < 16; i++){
 		b[i] = true;
-	}for(i = 0; i < 15; i++){
+	}for(i = 1; i < 17; i++){
 		c[i] = true;
 	}
-	try(0);
+	try(1);
 }

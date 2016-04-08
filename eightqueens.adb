@@ -4,24 +4,35 @@ with ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 procedure eightqueens is
 
 	type vector is array(integer range <>) of boolean;
-	i : integer;
+	type arr is array(positive range <>) of integer;
+	outfp : file_type;
 	a : vector(1..8);
 	b : vector(2..16);
 	c : vector(-7..7);	
-	x : array(1..8) of integer;
+	x : arr(1..8);
+	count : integer;
 
-	procedure print(x : in array(1..8) of integer)
-	k : integer;	
+	procedure print(x : in arr) is
 	begin
-		for k in 1 to 8 loop
-			put(x(k), width => 4);
+		eightqueens.count := eightqueens.count + 1;
+		put("Solution #: ");
+		put_line(integer'image(eightqueens.count));
+		for k in 1 .. 8 loop
+			for j in 1..8 loop
+				if j = x(k) then
+					put('Q');
+				else
+					put('.');
+				end if;
+			end loop;
+			new_line;
 		end loop;
-	end print
+		new_line;
+	end print;
 
-	procedure try(i: in integer; a : inout vector; b : inout vector; c : inout vector; x : inout array(1..8) of integer)
-	j : integer;
+	procedure try(i: in integer; a : in out vector; b : in out vector; c : in out vector; x : in out arr) is
 	begin
-		for j in 1 to 8 loop
+		for j in 1 .. 8 loop
 			if a(j) = true and b(i+j) = true and c(i-j) = true then
 				x(i) := j;
 				a(j) := false;
@@ -40,6 +51,9 @@ procedure eightqueens is
 	end try;
 
 begin
+	create(outfp, out_file, "8Queens.txt");
+	set_output(outfp);
+	count := 1;
 	for i in 1 .. 8 loop
 		a(i) := true;
 	end loop;
@@ -50,4 +64,7 @@ begin
 		c(i) := true;
 	end loop;
 	try(1,a,b,c,x);
+	if is_open(outfp) then
+		close(outfp);
+	end if;
 end eightqueens;
